@@ -26,7 +26,7 @@ public class AccountService {
 
         Integer currentBalance = accounts.get(accountId);
         if (currentBalance < amount)
-            return ResponseEntity.badRequest().body("Insufficient balance for withdraw");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance for withdraw");
         
 
         currentBalance = currentBalance - amount;
@@ -43,7 +43,7 @@ public class AccountService {
 
         Integer originBalance = accounts.get(origin);
         if (originBalance < amount)
-            return ResponseEntity.badRequest().body("Insufficient balance for transfer");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient balance for transfer");
 
         accounts.put(origin, originBalance - amount);
         accounts.put(destination, accounts.getOrDefault(destination, 0) + amount);
