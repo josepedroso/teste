@@ -1,4 +1,4 @@
-package com.ebanx.teste.domain;
+package com.ebanx.teste.model;
 import lombok.*;
 
 @Getter
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Event {
     private String type;
-    private Integer origin;
-    private Integer destination;
+    private String origin;
+    private String destination;
     private Integer amount;
 }

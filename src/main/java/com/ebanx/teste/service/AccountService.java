@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.ebanx.teste.domain.Account;
+import com.ebanx.teste.model.Account;
 
 @Service
 public class AccountService {
 
-    public ResponseEntity<Object> deposit(Integer accountId, Integer amount, Map<Integer, Integer> accounts) {
+    public ResponseEntity<Object> deposit(String accountId, Integer amount, Map<String, Integer> accounts) {
         Integer balance = accounts.getOrDefault(accountId, 0) + amount;
         accounts.put(accountId, balance);
         Map<String, Account> response = new HashMap<>();
@@ -20,13 +20,13 @@ public class AccountService {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    public ResponseEntity<Object> withdraw(Integer accountId, Integer amount, Map<Integer, Integer> accounts) {
+    public ResponseEntity<Object> withdraw(String accountId, Integer amount, Map<String, Integer> accounts) {
         if (!accounts.containsKey(accountId))
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
 
         Integer currentBalance = accounts.get(accountId);
         if (currentBalance < amount)
-            return ResponseEntity.badRequest().body("Insufficient balance");
+            return ResponseEntity.badRequest().body("Insufficient balance for withdraw");
         
 
         currentBalance = currentBalance - amount;
@@ -36,10 +36,10 @@ public class AccountService {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    public ResponseEntity<Object> transfer(Integer origin, Integer destination, Integer amount,
-            Map<Integer, Integer> accounts) {
+    public ResponseEntity<Object> transfer(String origin, String destination, Integer amount,
+            Map<String, Integer> accounts) {
         if (!accounts.containsKey(origin))
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
 
         Integer originBalance = accounts.get(origin);
         if (originBalance < amount)

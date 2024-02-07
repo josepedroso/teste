@@ -1,4 +1,4 @@
-package com.ebanx.teste.domain;
+package com.ebanx.teste.model;
 import lombok.*;
 
 @Getter
@@ -6,6 +6,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
-    private Integer id;
+    private String id;
     private Integer balance;
 }
