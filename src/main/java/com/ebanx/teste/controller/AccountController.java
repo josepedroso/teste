@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ebanx.teste.model.Event;
+import com.ebanx.teste.model.EventType;
+
 import com.ebanx.teste.service.AccountService;
 
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,7 @@ public class AccountController {
     private Map<String, Integer> accounts = new HashMap<>();
 
     @PostMapping(value = "/reset")
-    public ResponseEntity<Object> resete() {
+    public ResponseEntity<Object> reset() {
         accounts.clear();
         return ResponseEntity.status(HttpStatus.OK).body("OK");
     }
@@ -33,11 +35,11 @@ public class AccountController {
     @PostMapping(value = "/event")
     public ResponseEntity<Object> event(@RequestBody Event event) {
         switch (event.getType()) {
-            case "deposit":
+            case EventType.DEPOSIT:
                 return ((AccountService) accountService).deposit(event.getDestination(), event.getAmount(), accounts);
-            case "withdraw":
+            case EventType.WITHDRAW:
                 return ((AccountService) accountService).withdraw(event.getOrigin(), event.getAmount(), accounts);
-            case "transfer":
+            case EventType.TRANSFER:
                 return ((AccountService) accountService).transfer(event.getOrigin(), event.getDestination(), event.getAmount(), accounts);
             default:
                 return ResponseEntity.badRequest().body("Invalid event type");
